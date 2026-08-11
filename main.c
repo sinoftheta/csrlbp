@@ -14,6 +14,8 @@
 ********************************************************************************************/
 
 #include "raylib.h"
+#include <libfixmath/fixmath.h> // libfixmath
+
 
 #if defined(PLATFORM_WEB)
     #include <emscripten/emscripten.h>
@@ -38,6 +40,8 @@ int main()
     // Initialization
     //--------------------------------------------------------------------------------------
     InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
+    
+    fix16_t test;
 
 #if defined(PLATFORM_WEB)
     emscripten_set_main_loop(UpdateDrawFrame, 0, 1);

@@ -5,6 +5,8 @@ project(boilerplate)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Dependencies
+
+
 set(RAYLIB_VERSION 6.0)
 find_package(raylib ${RAYLIB_VERSION} QUIET) # QUIET or REQUIRED
 if (NOT raylib_FOUND) # If there's none, fetch and build raylib
@@ -22,10 +24,33 @@ if (NOT raylib_FOUND) # If there's none, fetch and build raylib
 endif()
 
 # Our Project
-
 add_executable(${PROJECT_NAME} main.c)
 #set(raylib_VERBOSE 1)
 target_link_libraries(${PROJECT_NAME} raylib)
+
+
+
+include(FetchContent)
+FetchContent_Declare(
+    libfixmath
+    GIT_REPOSITORY https://github.com/PetteriAimonen/libfixmath.git
+    GIT_TAG ed9391c33a56078c126e3e7a811a883c8c87daa2
+)
+FetchContent_MakeAvailable(libfixmath)
+
+target_compile_definitions(libfixmath PRIVATE
+    # FIXMATH_FAST_SIN
+    # FIXMATH_NO_64BIT
+    # FIXMATH_NO_CACHE
+    # FIXMATH_NO_HARD_DIVISION
+    # FIXMATH_NO_OVERFLOW
+    # FIXMATH_NO_ROUNDING
+    # FIXMATH_OPTIMIZE_8BIT
+)
+target_link_libraries(${PROJECT_NAME} libfixmath) ## must be done AFTER add_executable()
+
+
+
 
 # Web Configurations
 if (${PLATFORM} STREQUAL "Web")
