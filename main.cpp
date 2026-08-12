@@ -12,15 +12,15 @@
 *   Copyright (c) 2015 Ramon Santamaria (@raysan5)
 *
 ********************************************************************************************/
-
+extern "C" {
 #include "raylib.h"
 #include <libfixmath/fixmath.h> // libfixmath
 
-
+// #define PLATFORM_WEB
 #if defined(PLATFORM_WEB)
     #include <emscripten/emscripten.h>
 #endif
-
+}
 //----------------------------------------------------------------------------------
 // Global Variables Definition
 //----------------------------------------------------------------------------------
