@@ -25,3 +25,5 @@ cd build
 emcmake cmake .. -DPLATFORM=Web -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXECUTABLE_SUFFIX=".html"
 emmake make
 ```
+
+make sure the Emscripten SDK is up to date, actually install it from that link lol

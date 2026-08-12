@@ -15,12 +15,13 @@
 extern "C" {
 #include "raylib.h"
 #include <libfixmath/fixmath.h> // libfixmath
-
-// #define PLATFORM_WEB
-#if defined(PLATFORM_WEB)
-    #include <emscripten/emscripten.h>
-#endif
 }
+
+#if defined(PLATFORM_WEB)
+// emscripten automatically detects if its in c or c++
+  #include <emscripten/emscripten.h> 
+#endif
+
 //----------------------------------------------------------------------------------
 // Global Variables Definition
 //----------------------------------------------------------------------------------
