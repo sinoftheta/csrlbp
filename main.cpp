@@ -43,12 +43,27 @@ int main()
     InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
     
     fix16_t test;
+    
+#if defined(PLATFORM_WEB)
+    // return a value from js context
+    int browserWidth = EM_ASM_INT({
+         return window.innerWidth;
+    });
+    // Pass a value to js context
+    EM_ASM({
+         console.log("Hello from raylib via EM_ASM! ", $0);
+    }, 1);
+#endif
+    
 
 #if defined(PLATFORM_WEB)
     emscripten_set_main_loop(UpdateDrawFrame, 0, 1);
 #else
     SetTargetFPS(60);   // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
+    
+    
+  
 
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
