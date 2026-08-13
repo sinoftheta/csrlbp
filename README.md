@@ -26,4 +26,5 @@ emcmake cmake .. -DPLATFORM=Web -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXECUTABLE_SU
 emmake make
 ```
 
-make sure the Emscripten SDK is up to date, actually install it from that link lol
+linux: make sure the Emscripten SDK is up to date, actually install it from that link lol
+windows: https://www.msys2.org/ setup & use the MSYS2 MINGW64 shell

@@ -17,6 +17,13 @@ extern "C" {
 #include <libfixmath/fixmath.h> // libfixmath
 }
 
+#include "game_object.hpp"
+
+#include "welcome_text.cpp"
+
+#include <vector>
+#include <memory>
+
 #if defined(PLATFORM_WEB)
 // emscripten automatically detects if its in c or c++
   #include <emscripten/emscripten.h> 
@@ -33,16 +40,44 @@ int screenHeight = 450;
 //----------------------------------------------------------------------------------
 void UpdateDrawFrame(void);     // Update and Draw one frame
 
-//----------------------------------------------------------------------------------
-// Program main entry point
-//----------------------------------------------------------------------------------
+
+// this may need to go into a global singleton
+std::vector<std::unique_ptr<GameObject>> objects; // list of active game objects (smart pointers)
+
+void frame() {
+    // process loop
+    for (const auto& obj_ptr : objects) {
+        obj_ptr->process();
+    }
+
+
+    BeginDrawing();
+
+    ClearBackground(RAYWHITE);
+    
+    // render loop
+    for (const auto& obj_ptr : objects) {
+        obj_ptr->render();
+    }
+    EndDrawing();
+}
+
+
 int main()
 {
+    // TODO: ideally this is all handled within a singleton
     // Initialization
     //--------------------------------------------------------------------------------------
     InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
     
     fix16_t test;
+
+    objects.push_back(std::make_unique<GameObject>()); // make a new game object
+
+    // Adding an existing unique_ptr (Requires std::move)
+    // instantiate our WelcomeText
+    auto welcome_text = std::make_unique<WelcomeText>();
+    objects.push_back(std::move(welcome_text)); // my_obj is now empty
     
 #if defined(PLATFORM_WEB)
     // return a value from js context
@@ -57,18 +92,13 @@ int main()
     
 
 #if defined(PLATFORM_WEB)
-    emscripten_set_main_loop(UpdateDrawFrame, 0, 1);
+    emscripten_set_main_loop(frame, 0, 1);
 #else
     SetTargetFPS(60);   // Set our game to run at 60 frames-per-second
-    //--------------------------------------------------------------------------------------
-    
-    
-  
 
-    // Main game loop
-    while (!WindowShouldClose())    // Detect window close button or ESC key
+    while (!WindowShouldClose()) // Detect window close button or ESC key
     {
-        UpdateDrawFrame();
+        frame();
     }
 #endif
 
@@ -78,26 +108,4 @@ int main()
     //--------------------------------------------------------------------------------------
 
     return 0;
-}
-
-//----------------------------------------------------------------------------------
-// Module Functions Definition
-//----------------------------------------------------------------------------------
-void UpdateDrawFrame(void)
-{
-    // Update
-    //----------------------------------------------------------------------------------
-    // TODO: Update your variables here
-    //----------------------------------------------------------------------------------
-
-    // Draw
-    //----------------------------------------------------------------------------------
-    BeginDrawing();
-
-        ClearBackground(RAYWHITE);
-
-        DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
-
-    EndDrawing();
-    //----------------------------------------------------------------------------------
 }
